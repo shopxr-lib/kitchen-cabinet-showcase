@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { AppProvider } from "./context/AppContext";
+import * as THREE from "three";
 import Scene from "./components/Scene";
 import UI from "./components/UI";
 
@@ -40,6 +41,8 @@ function App() {
             antialias: true,
             alpha: false,
             powerPreference: "high-performance",
+            toneMapping: THREE.ACESFilmicToneMapping,
+            toneMappingExposure: 0.5,
           }}
         >
           <color attach="background" args={["#e0e0e0"]} />

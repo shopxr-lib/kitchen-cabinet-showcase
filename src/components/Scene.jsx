@@ -14,6 +14,7 @@ export default function Scene() {
 
   // State to track if textures are initially loaded
   const [texturesLoaded, setTexturesLoaded] = useState(false);
+  const [cabinetMaterial, setCabinetMaterial] = useState(null);
 
   // Load the kitchen cabinet model with corrected path
   const { scene } = useGLTF("/assets/models/masterbenchtop-cabinet1.glb");
@@ -23,12 +24,13 @@ export default function Scene() {
   const leftDoorRef = useRef();
   const rightDoorRef = useRef();
   const glassPartsRefs = useRef([]);
+  const isMounted = useRef(true);
 
   // Create and configure texture loader
   const textureLoader = useMemo(() => new THREE.TextureLoader(), []);
 
   // Create material with the texture - moved to useMemo to prevent flickering
-  const cabinetMaterial = useMemo(() => {
+  useEffect(() => {
     // Full path to texture with corrected base path
     const fullPath = `/assets/textures_new/${selectedMaterial.id}.jpg`;
 
@@ -40,13 +42,21 @@ export default function Scene() {
 
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(1, 1);
+    texture.anisotropy = 16;
 
     // Create optimized material with the texture
-    return new THREE.MeshStandardMaterial({
+    const material = new THREE.MeshStandardMaterial({
       map: texture,
       roughness: 0.6,
       metalness: 0.05,
     });
+
+    setCabinetMaterial(material);
+
+    // Cleanup function to dispose of the texture
+    return () => {
+      texture.dispose();
+    };
   }, [selectedMaterial, textureLoader]);
 
   // Create glass material that won't get texture applied
@@ -132,10 +142,6 @@ export default function Scene() {
     leftDoorRef.current = leftDoor;
     rightDoorRef.current = rightDoor;
 
-    console.log("Left door parts:", leftDoor.length);
-    console.log("Right door parts:", rightDoor.length);
-    console.log("Glass parts:", glassParts.length);
-
     // Store original positions/rotations for animation
     [...leftDoor, ...rightDoor].forEach((part) => {
       part.userData.originalRotation = part.rotation.y;
@@ -216,16 +222,16 @@ export default function Scene() {
   return (
     <>
       {/* Improved lighting for better material visibility */}
-      <Environment preset="city" intensity={0.7} />
+      <Environment preset="apartment" intensity={0.5} />
       <ambientLight intensity={0.2} />
       <directionalLight
         position={[2, 4, 0]}
-        intensity={0.8}
+        intensity={1}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
-      <hemisphereLight intensity={0.3} color="#ffffff" groundColor="#bbbbff" />
+      <hemisphereLight intensity={0} color="#ffffff" groundColor="#bbbbff" />
 
       {/* Cabinet model */}
       <group ref={cabinetRef} position={[0, 0, 0]} receiveShadow castShadow>

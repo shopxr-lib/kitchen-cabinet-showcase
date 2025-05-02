@@ -30,7 +30,7 @@ function App() {
 
   return (
     <AppProvider>
-      <div className="relative w-full h-screen bg-gray-200">
+      <div className="relative w-full h-[100dvh] bg-gray-200 overflow-hidden">
         {/* 3D Canvas */}
         <Canvas
           shadows

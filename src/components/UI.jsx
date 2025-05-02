@@ -20,12 +20,12 @@ export default function UI() {
   };
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
+    <div className="fixed top-0 left-0 w-full h-[100dvh] pointer-events-none z-10">
       {/* Door Control Button */}
       <div className="absolute top-6 left-6 pointer-events-auto z-20">
         <button
           onClick={handleDoorToggle}
-          className="bg-white p-3 rounded-lg shadow-md hover:bg-gray-100 transition-colors"
+          className="bg-white p-3 rounded-lg shadow-md hover:bg-gray-100 transition-colors cursor-pointer"
           aria-label="Toggle Cabinet Door"
         >
           <svg
@@ -86,7 +86,7 @@ export default function UI() {
       <div className="absolute bottom-6 left-6 pointer-events-auto z-20">
         <button
           onClick={handleMaterialToggle}
-          className="bg-white p-3 rounded-lg shadow-md hover:bg-gray-100 transition-colors"
+          className="bg-white p-3 rounded-lg shadow-md hover:bg-gray-100 transition-colors cursor-pointer"
           aria-label="Material Selection"
         >
           <FiLayers size={24} />

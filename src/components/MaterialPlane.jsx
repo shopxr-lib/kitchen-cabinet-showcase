@@ -10,7 +10,7 @@ export default function MaterialPanel({ isOpen }) {
         isOpen ? "max-w-full opacity-100" : "max-w-0 opacity-0"
       }`}
     >
-      <div className="p-4 flex items-center gap-3" style={{ width: "auto" }}>
+      <div className="p-4 flex items-center gap-3 w-auto overflow-x-auto max-w-[80vw] lg:max-w-[100vw] sm:overflow-x-auto">
         {materials.map((material) => (
           <div
             key={material.id}
